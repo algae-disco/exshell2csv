@@ -113,6 +113,7 @@ fi
   echo
 
   unzip -p "$1" xl/worksheets/sheet"$2".xml                            |
+<<<<<<< HEAD
   sed '
     s/<c [^>]*>/\
 &\
@@ -137,5 +138,9 @@ fi
     s/<f [^>]*\/>//
     s/^[A-Z]*/& /
   '
+=======
+  python3 parseSheet.py                                                |
+  sed -E 's/^([A-Z]{1,3})([0-9]{1,7})/\1 \2/'
+>>>>>>> 9b22319 (Testing performance enhancement with python)
 )                                                                      |
 cat
