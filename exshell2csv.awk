@@ -1,9 +1,5 @@
 #!/usr/bin/env awk -f
 
-BEGIN {
-	OFS=","
-}
-
 # field n and after n
 function after(n,                                                   r) {
   r="";
@@ -128,16 +124,14 @@ END{
   for (m=1;m<=xmax;m++) {
     if (debug) printf("%s,", m);
     for (n="A";ALPH_lt(n, ymax);n=ALPH_advance(n)) {
-      outline = ""
       c =  cell[m, n];
       gsub("\"", "\"\"", c);
-      if (match(c, ",")||match(c, "\\n")||match(c, "\"")) outline = outline "\"" c "\"" OFS;
-      else outline = outline c OFS;
+      if (match(c, ",")||match(c, "\\n")||match(c, "\"")) printf("\"%s\",", c);
+      else printf("%s,", c);
     }
       c =  cell[m, ymax];
       gsub("\"", "\"\"", c);
-      if (match(c, ",")||match(c, "\\n")||match(c, "\"")) outline = outline "\"" c "\"";
-      else outline = outline c;
-      print outline
+      if (match(c, ",")||match(c, "\\n")||match(c, "\"")) print "\""c"\"";
+      else print c;
   }
 }
