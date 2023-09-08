@@ -113,34 +113,7 @@ fi
   echo
 
   unzip -p "$1" xl/worksheets/sheet"$2".xml                            |
-<<<<<<< HEAD
-  sed '
-    s/<c [^>]*>/\
-&\
-/g
-    s/<\/c>/\
-&\
-/g
-  '                                                                    |
-  sed -n '/<c .*[^/]>/, /<\/c>/p'                                      |
-  sed '
-    /^<c /{
-      /t="s"/ s/.* r="\([^"]*\)" .*/\1 s/
-      /^<c/ s/.* r="\([^"]*\)" .*s="\([0-9]*\)".*/\1 \2/
-      /^<c/ s/.* r="\([^"]*\)">/\1 v/
-      :loop
-      N
-      /<\/c>/! bloop
-      s/\n/ /g
-    }
-    s/<\/\{0,1\}[vc]>//g
-    s/<f\( [^>]*\)\{0,1\}>.*<\/f>//
-    s/<f [^>]*\/>//
-    s/^[A-Z]*/& /
-  '
-=======
   python3 parseSheet.py                                                |
   sed -E 's/^([A-Z]{1,3})([0-9]{1,7})/\1 \2/'
->>>>>>> 9b22319 (Testing performance enhancement with python)
 )                                                                      |
 cat
