@@ -30,7 +30,7 @@ fi
 
 if [ "$2" = '' ]
 then
-  unzip -p "$1" xl/workbook.xml                                        |
+  python3 -c "import zipfile; print(zipfile.ZipFile('$1', 'r').extract('xl/workbook.xml').decode()) |
   sed '
     $!N
     H
@@ -47,7 +47,7 @@ then
 fi
 
 (
-  unzip -p "$1" xl/sharedStrings.xml                                   |
+  python3 -c "import zipfile; print(zipfile.ZipFile('$1', 'r').extract('xl/sharedStrings.xml').decode()) |
   awk '{gsub("\\r", ""); print}'                                       |
   sed '
     1{
@@ -107,12 +107,12 @@ fi
     /<\/t>/ b topen
     s/.*//
     x
-    '                                                                  |
+    '                                                                  | tr -cd "[:print:]\n" |
     sed 's/^/l /'
 
   echo
 
-  unzip -p "$1" xl/worksheets/sheet"$2".xml                            |
+  python3 -c "import zipfile; print(zipfile.ZipFile('$1', 'r').extract('xl/worksheets/sheet"$2".xml').decode()) |
   python3 parseSheet.py                                                |
   sed -E 's/^([A-Z]{1,3})([0-9]{1,7})/\1 \2/'
 )                                                                      |
